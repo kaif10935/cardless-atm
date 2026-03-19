@@ -1,6 +1,7 @@
 package com.atm.atm_cardless.service;
 
 import com.atm.atm_cardless.dto.DepositRequestDto;
+import com.atm.atm_cardless.dto.OpenAccountDto;
 import com.atm.atm_cardless.dto.WithdrawRequestDto;
 import com.atm.atm_cardless.entity.Account;
 import com.atm.atm_cardless.entity.User;
@@ -13,4 +14,5 @@ public interface AccountService {
     public void createAccount(User user);
     public void withdraw(WithdrawRequestDto dto);
     public void deposit(DepositRequestDto dto);
+    public void openAccount(OpenAccountDto dto);
 }

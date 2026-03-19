@@ -1,5 +1,6 @@
 package com.atm.atm_cardless.entity;
 
+import com.atm.atm_cardless.enums.AccountType;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -18,22 +19,16 @@ public class Account {
     private User user;
 
     @Column(nullable = false)
-    private String accountType;
+    @Enumerated(EnumType.STRING)
+    private AccountType accountType;
 
     @Column(nullable = false)
     private Double balance;
 
-    @Column(nullable = false)
-    private String bankName;
-
-    @Column(nullable = false)
-    private double dailyWithdrawAmount;
-
     @PrePersist
     public void setDefaults(){
         if(balance == null) balance = 0.0;
-        if(accountType == null) accountType = "SAVINGS";
-        if(bankName == null) bankName = "GOBEYOND Bank";
+        if(accountType == null) accountType = AccountType.SAVINGS;
     }
 
 }

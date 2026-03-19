@@ -1,6 +1,7 @@
 package com.atm.atm_cardless.service.serviceImpl;
 
 import com.atm.atm_cardless.dto.DepositRequestDto;
+import com.atm.atm_cardless.dto.OpenAccountDto;
 import com.atm.atm_cardless.dto.WithdrawRequestDto;
 import com.atm.atm_cardless.entity.Account;
 import com.atm.atm_cardless.entity.User;
@@ -8,12 +9,15 @@ import com.atm.atm_cardless.repository.AccountRepository;
 import com.atm.atm_cardless.repository.UserRepository;
 import com.atm.atm_cardless.service.AccountService;
 import com.atm.atm_cardless.service.TransactionService;
+import com.atm.atm_cardless.service.UserService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class AccountServiceImpl implements AccountService{
@@ -51,4 +55,25 @@ public class AccountServiceImpl implements AccountService{
     public void deposit(DepositRequestDto dto) {
        transactionService.deposit(dto);
     }
+
+    @Override
+    public void openAccount(OpenAccountDto dto){
+        Optional<User> optionalUser = userRepository.findByMobileNumber(dto.getMobileNumber());
+        Account account = new Account();
+        account.setAccountType(dto.getType());
+
+        User user;
+
+        if(optionalUser.isEmpty()){
+            user = new User();
+            user.setMobileNumber(dto.getMobileNumber());
+            user.setName(dto.getName());
+        }else{
+            user = optionalUser.get();
+        }
+        user.addAccount(account);
+        accountRepository.save(account);
+        userRepository.save(user);
+    }
+
 }

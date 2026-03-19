@@ -1,6 +1,7 @@
 package com.atm.atm_cardless.controller;
 
 import com.atm.atm_cardless.dto.DepositRequestDto;
+import com.atm.atm_cardless.dto.OpenAccountDto;
 import com.atm.atm_cardless.dto.WithdrawRequestDto;
 import com.atm.atm_cardless.entity.Account;
 import com.atm.atm_cardless.service.AccountService;
@@ -35,6 +36,13 @@ public class AccountController{
         accountService.deposit(dto);
         return new ResponseEntity<>("Your amount deposited successfully",HttpStatus.OK);
     }
+
+    @PostMapping("/open-account")
+    public ResponseEntity<?> openAccount(@RequestBody OpenAccountDto openAccountDto){
+        accountService.openAccount(openAccountDto);
+        return new ResponseEntity<>("Account created Successfully",HttpStatus.OK);
+    }
+
 
 
 }

@@ -23,13 +23,14 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long userId;
 
-    @Column(nullable = false, length = 10)
+    @Column(nullable = false, length = 10, unique = true)
     private String mobileNumber;
 
     @OneToMany(
             mappedBy = "user",
             fetch = FetchType.LAZY,
-            cascade = CascadeType.ALL
+            cascade = CascadeType.ALL,
+            orphanRemoval = true
     )
     private List<Account> accounts = new ArrayList<>();
 
@@ -37,5 +38,18 @@ public class User {
 
     private boolean active = true;
 
-    private LocalDateTime createdAt = LocalDateTime.now();
+    private LocalDateTime createdAt;
+
+    public void addAccount(Account account){
+        if(!accounts.contains(account)) {
+            accounts.add(account);
+            account.setUser(this);
+        }
+    }
+
+    @PrePersist
+    public void prePersist(){
+        createdAt = LocalDateTime.now();
+    }
+
 }
